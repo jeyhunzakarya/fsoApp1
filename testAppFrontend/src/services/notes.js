@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { AdditiveBlending } from 'three'
-const baseUrl = 'http://localhost:3001/notes'
+const baseUrl = 'http://localhost:3001/api/notes'
 
 const getAll = () => {
     const allData = axios.get(baseUrl)
