@@ -36,6 +36,7 @@ const App = () => {
       content: newNote,
       date: new Date(),
       important: Math.random() > 0.5,
+      id : notes.length+1
     }
   
 
