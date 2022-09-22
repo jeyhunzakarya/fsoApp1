@@ -2,6 +2,21 @@ import { useState, useEffect } from 'react'
 import Note from "./components/Note"
 import axios from 'axios'
 import noteService from './services/notes'
+
+const Footer = () => {
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16
+  }
+  return (
+    <div style={footerStyle}>
+      <br />
+      <em>Note app, Department of Computer Science, University of Helsinki 2022</em>
+    </div>
+  )
+}
+
 const App = () => {
 
   const [notes, setNotes] = useState([])
@@ -74,6 +89,7 @@ const App = () => {
       <input value={newNote} onChange ={changeNoteHandler}/>
       <button type="submit">save</button>
     </form>  
+    <Footer />
     </div>
   )
 }
