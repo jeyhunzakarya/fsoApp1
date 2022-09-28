@@ -5,7 +5,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const Note = require('./models/note')
-app.use(express.static('build'))
+// app.use(express.static('build1'))
 app.use(cors())
 app.use(express.json())
 
@@ -109,5 +109,5 @@ const unknownEndpoint = (request, response) => {
   
 app.use(unknownEndpoint)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT||3001
 app.listen(PORT)
