@@ -1,3 +1,1 @@
-To deploy the app to fly.io, run fly deploy in backend directory
-The backend and frontend are linked via build, which copies the contents of frontend to the backend
-to run the project locally, go to backend directory, npm run dev
+Initial version of deployed notes website.To run in dev mode, use npm run dev. Removing proxy from package.json in frontend directory might be needed to run in dev mode. 
