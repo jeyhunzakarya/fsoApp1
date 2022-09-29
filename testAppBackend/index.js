@@ -5,7 +5,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const Note = require('./models/note')
-// app.use(express.static('build1'))
+app.use(express.static('build1'))
 app.use(cors())
 app.use(express.json())
 
@@ -67,8 +67,17 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/notes', (request, response) => {
-  Note.find({}).then(notes => {
-    response.json(notes)
+  Note.find({})
+  .then(notes => {
+    if (note) {
+      response.json(note)
+    } else {
+      response.status(404).end()
+    }
+  })
+  .catch(error => {
+    console.log(error)
+    response.status(400).send({ error: 'malformatted id' })
   })
 })
 
