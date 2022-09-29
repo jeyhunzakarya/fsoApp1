@@ -6,9 +6,8 @@ const cors = require('cors')
 const app = express()
 const Note = require('./models/note')
 app.use(express.static('build1'))
-app.use(cors())
 app.use(express.json())
-
+app.use(cors())
 
 const requestLogger = (request, response, next) => {
     console.log('Method:', request.method)
@@ -18,28 +17,6 @@ const requestLogger = (request, response, next) => {
     next()
 }
 app.use(requestLogger)
-// const mongoose = require('mongoose')
-
-// // DO NOT SAVE YOUR PASSWORD TO GITHUB!!
-
-// mongoose.connect(url)
-
-// const noteSchema = new mongoose.Schema({
-//   content: String,
-//   date: Date,
-//   important: Boolean,
-// })
-
-// noteSchema.set('toJSON', {
-//   transform: (document, returnedObject) => {
-//     returnedObject.id = returnedObject._id.toString()
-//     delete returnedObject._id
-//     delete returnedObject.__v
-//   }
-// })
-
-// const Note = mongoose.model('Note', noteSchema)
-
 
 let notes = [
     {
@@ -69,6 +46,13 @@ app.get('/', (request, response) => {
 app.get('/api/notes', (request, response) => {
   Note.find({})
   .then(notes => {
+    response.json(notes)
+  })
+})
+
+app.get('/api/notes/:id', (request, response, next) => {
+  Note.findById(request.params.id)
+  .then(note => {
     if (note) {
       response.json(note)
     } else {
@@ -76,14 +60,7 @@ app.get('/api/notes', (request, response) => {
     }
   })
   .catch(error => {
-    console.log(error)
-    response.status(400).send({ error: 'malformatted id' })
-  })
-})
-
-app.get('/api/notes/:id', (request, response) => {
-  Note.findById(request.params.id).then(note => {
-    response.json(note)
+    next(error)
   })
 })
 
@@ -117,6 +94,19 @@ const unknownEndpoint = (request, response) => {
 }
   
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+// this has to be the last loaded middleware.
+app.use(errorHandler)
+
 
 const PORT = process.env.PORT||3001
 app.listen(PORT)
